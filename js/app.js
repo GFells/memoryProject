@@ -1,6 +1,7 @@
 const fullDeck = document.querySelector('.deck');
 const cardList = document.getElementsByClassName('card');
 const restartButton = document.querySelector('.restart');
+const lifeCount = document.querySelectorAll('.fa-star');
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -16,7 +17,7 @@ function shuffle(array) {
     return array;
 }
 
-function startGame() {
+function cardShuffle() {
   var cardArray = [];
   for (let i=0;i<16;++i) {
     cardList[i].className="card";
@@ -28,7 +29,21 @@ function startGame() {
   }
 }
 
+function startGame() {
+  cardShuffle();
+  for (let i=0;i<3;++i) {
+    lifeCount[i].className="fa fa-star";
+  }
+  livesUpdate();
+}
+
+function livesUpdate() {
+  document.querySelector('.moves').textContent=document.querySelectorAll('.fa-star').length;
+}
+
 startGame();
+
+restartButton.addEventListener('click',startGame);
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
