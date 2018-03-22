@@ -46,6 +46,10 @@ function matchHandler() {
     openList[i].className='card match';
   }
   openList.length=0;
+  var lives = document.querySelectorAll('.fa-star-o');
+  if (lives.length != 0) {
+    lives[0].className='fa fa-star';
+  }
 }
 
 function noMatch() {
@@ -58,6 +62,8 @@ function noMatch() {
       openList.length=0;
     }
   },750);
+  var lives = document.querySelectorAll('.fa-star');
+  lives[lives.length-1].className='fa fa-star-o';
 }
 
 function matchCheck() {
@@ -68,10 +74,19 @@ function matchCheck() {
     canClick = false;
     noMatch();
   }
+  livesUpdate();
 }
 
 function livesUpdate() {
-  document.querySelector('.moves').textContent=document.querySelectorAll('.fa-star').length;
+  const moves = document.querySelector('.moves');
+  const life = document.querySelectorAll('.fa-star');
+  if (life.length === 1) {
+    var moveWord = ' Move';
+  }
+  else {
+    var moveWord = ' Moves';
+  }
+  moves.textContent=life.length + moveWord
 }
 
 function trackOpen(card) {
