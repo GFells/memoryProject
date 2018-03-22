@@ -45,14 +45,14 @@ function loseScreen() {
   for (let i=0;i<cardList.length;++i) {
     cardList[i].className="card open show"
   }
-  setTimeout(function() {alert('Game Over! Please try again!')},1);
+  setTimeout(function() {alert('Game Over! Please try again!')},10);
 }
 
 function winLossCheck() {
   const matchedList = document.querySelectorAll('.match');
   const lives = document.querySelectorAll('.fa-star');
   if (matchedList.length === 16) {
-    alert('Congratulations, you win!');
+    setTimeout(function() {alert('Congratulations, you win!')},10);
   }
   else if (lives.length === 0) {
     loseScreen();
