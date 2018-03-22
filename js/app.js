@@ -2,6 +2,7 @@ const fullDeck = document.querySelector('.deck');
 const cardList = document.getElementsByClassName('card');
 const restartButton = document.querySelector('.restart');
 const lifeCount = document.querySelectorAll('.fa-star');
+const openList = [];
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -35,14 +36,27 @@ function startGame() {
     lifeCount[i].className="fa fa-star";
   }
   livesUpdate();
+  openList.length=0;
 }
 
 function livesUpdate() {
   document.querySelector('.moves').textContent=document.querySelectorAll('.fa-star').length;
 }
 
+function trackOpen(card) {
+  openList.push(card);
+}
+
+function flipCard(evt) {
+  if (evt.target.className === 'card') {
+    evt.target.className='card open show';
+    trackOpen(evt.target);
+  }
+}
+
 startGame();
 
+fullDeck.addEventListener('click',flipCard);
 restartButton.addEventListener('click',startGame);
 /*
  * set up the event listener for a card. If a card is clicked:
