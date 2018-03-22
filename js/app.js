@@ -40,22 +40,19 @@ function restartGame() {
   openList.length=0;
 }
 
-function winScreen() {
+function loseScreen() {
+  openList.length=0;
   for (let i=0;i<cardList.length;++i) {
-    cardList[i].classList.toggle('hide');
+    cardList[i].className="card open show"
   }
+  setTimeout(function() {alert('Game Over! Please try again!')},1);
 }
 
-function loseScreen() {
-  for (let i=0;i<cardList.length;++i) {
-    cardList[i].classList.toggle('hide');
-  }
-}
 function winLossCheck() {
   const matchedList = document.querySelectorAll('.match');
-  const lives = document.querySelectorall('.fa-star');
+  const lives = document.querySelectorAll('.fa-star');
   if (matchedList.length === 16) {
-    winScreen();
+    alert('Congratulations, you win!');
   }
   else if (lives.length === 0) {
     loseScreen();
