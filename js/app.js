@@ -3,6 +3,7 @@ const cardList = document.getElementsByClassName('card');
 const restartButton = document.querySelector('.restart');
 const lifeCount = document.querySelectorAll('.fa-star');
 const openList = [];
+var canClick = true;
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -39,16 +40,49 @@ function startGame() {
   openList.length=0;
 }
 
+
+function matchHandler() {
+  for (let i=0;i<2;++i) {
+    openList[i].className='card match';
+  }
+  openList.length=0;
+}
+
+function noMatch() {
+  setTimeout(function () {
+    canClick = true;
+    if (openList.length === 2) {
+      for (let i=0;i<2;++i) {
+        openList[i].className='card';
+      }
+      openList.length=0;
+    }
+  },750);
+}
+
+function matchCheck() {
+  if (openList[0].firstElementChild.className == openList[1].firstElementChild.className) {
+    matchHandler();
+  }
+  else {
+    canClick = false;
+    noMatch();
+  }
+}
+
 function livesUpdate() {
   document.querySelector('.moves').textContent=document.querySelectorAll('.fa-star').length;
 }
 
 function trackOpen(card) {
   openList.push(card);
+  if (openList.length === 2) {
+    matchCheck();
+  }
 }
 
 function flipCard(evt) {
-  if (evt.target.className === 'card') {
+  if (evt.target.className === 'card' && canClick === true) {
     evt.target.className='card open show';
     trackOpen(evt.target);
   }
