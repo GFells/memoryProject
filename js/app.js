@@ -31,7 +31,7 @@ function cardShuffle() {
   }
 }
 
-function startGame() {
+function restartGame() {
   cardShuffle();
   for (let i=0;i<3;++i) {
     lifeCount[i].className="fa fa-star";
@@ -40,6 +40,27 @@ function startGame() {
   openList.length=0;
 }
 
+function winScreen() {
+  for (let i=0;i<cardList.length;++i) {
+    cardList[i].classList.toggle('hide');
+  }
+}
+
+function loseScreen() {
+  for (let i=0;i<cardList.length;++i) {
+    cardList[i].classList.toggle('hide');
+  }
+}
+function winLossCheck() {
+  const matchedList = document.querySelectorAll('.match');
+  const lives = document.querySelectorall('.fa-star');
+  if (matchedList.length === 16) {
+    winScreen();
+  }
+  else if (lives.length === 0) {
+    loseScreen();
+  }
+}
 
 function matchHandler() {
   for (let i=0;i<2;++i) {
@@ -75,6 +96,7 @@ function matchCheck() {
     noMatch();
   }
   livesUpdate();
+  winLossCheck();
 }
 
 function livesUpdate() {
@@ -103,10 +125,10 @@ function flipCard(evt) {
   }
 }
 
-startGame();
+cardShuffle();
 
 fullDeck.addEventListener('click',flipCard);
-restartButton.addEventListener('click',startGame);
+restartButton.addEventListener('click',restartGame);
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
