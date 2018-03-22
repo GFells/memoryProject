@@ -1,16 +1,7 @@
-/*
- * Create a list that holds all of your cards
- */
+const fullDeck = document.querySelector('.deck');
+const cardList = document.getElementsByClassName('card');
+const restartButton = document.querySelector('.restart');
 
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -25,7 +16,19 @@ function shuffle(array) {
     return array;
 }
 
+function startGame() {
+  var cardArray = [];
+  for (let i=0;i<16;++i) {
+    cardList[i].className="card";
+    cardArray[i] = cardList[i];
+  }
+  shuffle(cardArray);
+  for (let i=0;i<16;++i) {
+    fullDeck.appendChild(cardArray[i]);
+  }
+}
 
+startGame();
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
