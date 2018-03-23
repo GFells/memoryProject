@@ -4,6 +4,7 @@ const restartButton = document.querySelector('.restart');
 const lifeCount = document.querySelectorAll('.fa-star');
 const openList = [];
 let canClick = true;
+let startTime = performance.now();
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -39,6 +40,7 @@ function restartGame() {
   };
   livesUpdate();
   openList.length=0;
+  startTime = performance.now();
 }
 
 function livesUpdate() {
@@ -113,21 +115,31 @@ function noMatch() {
 function winLossCheck() {
   const matchedList = document.querySelectorAll('.match');
   const lives = document.querySelectorAll('.fa-star');
+  let endTime = performance.now();
+  let totalTime = Number((endTime - startTime)/1000).toFixed(2);
   if (matchedList.length === 16) {
-//prevents alert from resolving before final card is flipped
-    setTimeout(function() {alert('Congratulations, you win!')},10);
+    winScreen(totalTime);
   } else if (lives.length === 0) {
-    loseScreen();
+    loseScreen(totalTime);
   }
 }
 
-function loseScreen() {
+function winScreen(time) {
+  let winMessage = "Congratulations, you win! Your victory took " + time + " \
+seconds! Please click the restart button to play again!";
+//prevents alert from resolving before final card is flipped
+  setTimeout(function() {alert(winMessage)},10);
+}
+
+function loseScreen(time) {
   openList.length=0;
   for (let i=0;i<cardList.length;++i) {
     cardList[i].className='card open show';
   };
+  let loseMessage = "Game over! Your game lasted " + time + " seconds. Please \
+click restart to try again!"
 //prevents alert from resolving before cards are flipped to show
-  setTimeout(function() {alert('Game Over! Please try again!')},10);
+  setTimeout(function() {alert(loseMessage)},10);
 }
 
 //shuffles cards for initial game state
