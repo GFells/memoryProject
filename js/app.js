@@ -19,6 +19,7 @@ function shuffle(array) {
     return array;
 }
 
+//Creates an array from the cardList. Necessary for shuffle to function.
 function cardShuffle() {
   const cardArray = [];
   for (let i=0;i<16;++i) {
@@ -65,6 +66,9 @@ function trackOpen(card) {
   }
 }
 
+/*Checks flipped cards for a match, then updates the game state based on whether
+or not a match was made, including updating moves and checking for win/loss
+*/
 function matchCheck() {
   if (openList[0].firstElementChild.className == openList[1].firstElementChild.className) {
     matchHandler();
@@ -76,6 +80,7 @@ function matchCheck() {
   winLossCheck();
 }
 
+//Changes cards to matched state, grants additional move
 function matchHandler() {
   for (let i=0;i<2;++i) {
     openList[i].className='card match';
@@ -87,9 +92,13 @@ function matchHandler() {
   }
 }
 
+
+//Reduces remaining moves, flips cards back over after a short delay
 function noMatch() {
   setTimeout(function () {
+//prevents clicking before cards are flipped back over
     canClick = true;
+//prevents undesired behavior when restarting the game before this function resolves
     if (openList.length === 2) {
       for (let i=0;i<2;++i) {
         openList[i].className='card';
@@ -105,6 +114,7 @@ function winLossCheck() {
   const matchedList = document.querySelectorAll('.match');
   const lives = document.querySelectorAll('.fa-star');
   if (matchedList.length === 16) {
+//prevents alert from resolving before final card is flipped
     setTimeout(function() {alert('Congratulations, you win!')},10);
   } else if (lives.length === 0) {
     loseScreen();
@@ -116,9 +126,11 @@ function loseScreen() {
   for (let i=0;i<cardList.length;++i) {
     cardList[i].className='card open show';
   };
+//prevents alert from resolving before cards are flipped to show
   setTimeout(function() {alert('Game Over! Please try again!')},10);
 }
 
+//shuffles cards for initial game state
 cardShuffle();
 
 fullDeck.addEventListener('click',flipCard);
