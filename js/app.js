@@ -3,8 +3,21 @@ const cardList = document.getElementsByClassName('card');
 const restartButton = document.querySelector('.restart');
 const lifeCount = document.querySelectorAll('.fa-star');
 const openList = [];
+let startStop = setInterval(trackTime,10);
 let canClick = true;
 let startTime = performance.now();
+
+function trackTime() {
+  document.querySelector('.timer').textContent = Number((performance.now() - startTime)/1000).toFixed(2);
+}
+
+function startTimer() {
+  startStop = setInterval(trackTime,10);
+}
+
+function endTimer() {
+  clearInterval(startStop);
+}
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -31,6 +44,8 @@ function cardShuffle() {
   for (let i=0;i<16;++i) {
     fullDeck.appendChild(cardArray[i]);
   };
+  endTimer();
+  startTimer();
 }
 
 function restartGame() {
@@ -115,8 +130,7 @@ function noMatch() {
 function winLossCheck() {
   const matchedList = document.querySelectorAll('.match');
   const lives = document.querySelectorAll('.fa-star');
-  let endTime = performance.now();
-  let totalTime = Number((endTime - startTime)/1000).toFixed(2);
+  let totalTime = document.querySelector('.timer').textContent;
   if (matchedList.length === 16) {
     winScreen(totalTime);
   } else if (lives.length === 0) {
@@ -128,7 +142,8 @@ function winScreen(time) {
   let winMessage = "Congratulations, you win! Your victory took " + time + " \
 seconds! Please click the restart button to play again!";
 //prevents alert from resolving before final card is flipped
-  setTimeout(function() {alert(winMessage)},10);
+  setTimeout(function() {alert(winMessage)},20);
+  endTimer();
 }
 
 function loseScreen(time) {
@@ -139,7 +154,8 @@ function loseScreen(time) {
   let loseMessage = "Game over! Your game lasted " + time + " seconds. Please \
 click restart to try again!"
 //prevents alert from resolving before cards are flipped to show
-  setTimeout(function() {alert(loseMessage)},10);
+  setTimeout(function() {alert(loseMessage)},20);
+  endTimer();
 }
 
 //shuffles cards for initial game state
