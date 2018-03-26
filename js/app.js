@@ -28,7 +28,6 @@ utils.shuffle = function(array) {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
   }
-
   return array;
 }
 
@@ -48,13 +47,8 @@ function endTimer() {
   clearInterval(startStop);
 }
 
-//Creates an array from the cardList. Necessary for shuffle to function.
 function cardShuffle() {
-  const cardArray = [];
-  for (let i=0;i<16;++i) {
-    cardList[i].className='card';
-    cardArray[i] = cardList[i];
-  };
+  const cardArray = Array.from(cardList);
   utils.shuffle(cardArray);
   for (let i=0;i<16;++i) {
     fullDeck.appendChild(cardArray[i]);
