@@ -2,6 +2,7 @@ const fullDeck = document.querySelector('.deck');
 const cardList = document.getElementsByClassName('card');
 const restartButton = document.querySelector('.restart');
 const openList = [];
+
 const game = {
   lives: 3,
   matches: 0,
@@ -9,12 +10,34 @@ const game = {
 game.ui={};
 game.ui.moves = document.querySelector('.moves');
 game.ui.stars = document.querySelectorAll('.fa-star');
+
+const utils = {};
+
+utils.formatTime = function(seconds) {
+  var timeInSec = Number(seconds/1000).toFixed(2);
+  document.querySelector('.timer').textContent=timeInSec;
+}
+
+utils.shuffle = function(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 let startStop = setInterval(trackTime,10);
 let canClick = true;
 let startTime = performance.now();
 
 function trackTime() {
-  document.querySelector('.timer').textContent = Number((performance.now() - startTime)/1000).toFixed(2);
+  utils.formatTime(performance.now()-startTime);
 }
 
 function startTimer() {
@@ -25,20 +48,6 @@ function endTimer() {
   clearInterval(startStop);
 }
 
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
 //Creates an array from the cardList. Necessary for shuffle to function.
 function cardShuffle() {
   const cardArray = [];
@@ -46,7 +55,7 @@ function cardShuffle() {
     cardList[i].className='card';
     cardArray[i] = cardList[i];
   };
-  shuffle(cardArray);
+  utils.shuffle(cardArray);
   for (let i=0;i<16;++i) {
     fullDeck.appendChild(cardArray[i]);
   };
