@@ -49,10 +49,13 @@ function endTimer() {
 
 function cardShuffle() {
   const cardArray = Array.from(cardList);
+  cardArray.forEach(function(card) {
+    card.className='card';
+  });
   utils.shuffle(cardArray);
-  for (let i=0;i<16;++i) {
-    fullDeck.appendChild(cardArray[i]);
-  };
+  cardArray.forEach(function(card) {
+    fullDeck.appendChild(card);
+  });
   endTimer();
   startTimer();
 }
