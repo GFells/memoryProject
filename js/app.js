@@ -1,8 +1,14 @@
 const fullDeck = document.querySelector('.deck');
 const cardList = document.getElementsByClassName('card');
 const restartButton = document.querySelector('.restart');
-const lifeCount = document.querySelectorAll('.fa-star');
 const openList = [];
+const game = {
+  lives: 3,
+  matches: 0,
+}
+game.ui={};
+game.ui.moves = document.querySelector('.moves');
+game.ui.stars = document.querySelectorAll('.fa-star');
 let startStop = setInterval(trackTime,10);
 let canClick = true;
 let startTime = performance.now();
@@ -51,22 +57,22 @@ function cardShuffle() {
 function restartGame() {
   cardShuffle();
   for (let i=0;i<3;++i) {
-    lifeCount[i].className='fa fa-star';
+    game.ui.stars[i].className='fa fa-star';
   };
+  game.matches = 0;
+  game.lives = 3;
   livesUpdate();
   openList.length=0;
   startTime = performance.now();
 }
 
 function livesUpdate() {
-  const moves = document.querySelector('.moves');
-  const life = document.querySelectorAll('.fa-star');
-  if (life.length === 1) {
+  if (game.lives === 1) {
     var moveWord = ' Move';
   } else {
     var moveWord = ' Moves';
   }
-  moves.textContent=life.length + moveWord
+  game.ui.moves.textContent=game.lives + moveWord
 }
 
 function flipCard(evt) {
@@ -103,9 +109,10 @@ function matchHandler() {
     openList[i].className='card match';
   };
   openList.length=0;
-  const lives = document.querySelectorAll('.fa-star-o');
-  if (lives.length != 0) {
-    lives[0].className='fa fa-star';
+  game.matches += 1;
+  if (game.lives < 3) {
+    document.querySelector('.fa-star-o').className='fa fa-star';
+    game.lives += 1;
   }
 }
 
@@ -123,17 +130,15 @@ function noMatch() {
       openList.length=0;
     }
   },750);
-  const lives = document.querySelectorAll('.fa-star');
-  lives[lives.length-1].className='fa fa-star-o';
+  document.querySelectorAll('.fa-star')[game.lives-1].className='fa fa-star-o';
+  game.lives -= 1;
 }
 
 function winLossCheck() {
-  const matchedList = document.querySelectorAll('.match');
-  const lives = document.querySelectorAll('.fa-star');
   let totalTime = document.querySelector('.timer').textContent;
-  if (matchedList.length === 16) {
+  if (game.matches === 8) {
     winScreen(totalTime);
-  } else if (lives.length === 0) {
+  } else if (game.lives === 0) {
     loseScreen(totalTime);
   }
 }
